@@ -1,6 +1,6 @@
 ### Estudo de Git ~
 
-Estudos sobre GIT e funcionalidade utilizando o GitHub.
+Estudos sobre GIT e GitHub.
 
 Catalogando alguns comando e entendendo alguns conceitos da tecnologia GIT.
 
