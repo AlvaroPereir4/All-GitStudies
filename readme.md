@@ -12,3 +12,8 @@ Catalogando alguns comando e entendendo alguns conceitos da tecnologia GIT.
 ### Cursos
 
 1. Git e GitHub: dominando controle de versão de código - Alura: https://cursos.alura.com.br/course/git-github-dominando-controle-versao-codigo
+
+
+### Notations
+
+General notations sobre Github studies: https://www.notion.so/Git_commands-1ea0166bb9f680cfa811fc06fbde2683?source=copy_link
