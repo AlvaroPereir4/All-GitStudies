@@ -17,3 +17,8 @@ Catalogando alguns comando e entendendo alguns conceitos da tecnologia GIT.
 ### Notations
 
 General notations sobre Github studies: https://www.notion.so/Git_commands-1ea0166bb9f680cfa811fc06fbde2683?source=copy_link
+
+### Github Actions Scrips
+Diversos scrips com funcoes diversas, com foco em desenvolver algumas automatizacoes e processos legais.
+1 - changelog.yml: Possui o papel que toda vez que ter algum push na branch principal, pega as mensagens de commits e atualiza o changelog.
+
