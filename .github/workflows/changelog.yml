@@ -3,7 +3,10 @@ name: Generate Changelog
 on:
   push:
     branches:
-      - main  # ou main, depende da sua branch principal
+      - main
+
+permissions:
+  contents: write
 
 jobs:
   changelog:
