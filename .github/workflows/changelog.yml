@@ -25,11 +25,12 @@ jobs:
 
       - name: Generate incremental changelog
         run: |
-          # Cria CHANGELOG.md se não existir
           touch CHANGELOG.md
 
-          # Filtra os commits que ainda não estão no CHANGELOG
-          NEW_COMMITS=$(git log --reverse --pretty=format:"- %s (%h)" | grep -Fxv -f CHANGELOG.md)
+          # Filtra commits novos, ignorando os commits de atualização do changelog
+          NEW_COMMITS=$(git log --reverse --pretty=format:"- %s (%h)" \
+                        | grep -Fxv -f CHANGELOG.md \
+                        | grep -v '^chore: update changelog')
 
           # Se houver novos commits, adiciona no topo do CHANGELOG
           if [ ! -z "$NEW_COMMITS" ]; then
