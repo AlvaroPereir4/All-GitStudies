@@ -42,7 +42,6 @@ jobs:
           cat new_changelog.txt >> CHANGELOG.md
           tail -n +2 CHANGELOG.md >> CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
 
-      # 4. Commitar arquivo atualizado
       - name: Commit changelog
         run: |
           git add CHANGELOG.md
