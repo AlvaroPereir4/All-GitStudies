@@ -1,5 +1,10 @@
 ## Changelog
 
+- chore: update changelog (e2fc4db)
+- fix: adjusmento to changelog.yml.. to ignore chore commits (63872df)
+
+## Changelog
+
 - chore: update changelog (5d97d9b)
 - fix: adjusmento to changelog.yml (743e885)
 
