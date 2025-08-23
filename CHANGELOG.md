@@ -1,3 +1,1 @@
-## Changelog
-
-- Delete changelog.md (5c60ac6)
+- fix: adjustment to changelog.yml, to update continuos changelog list (7b98430)
