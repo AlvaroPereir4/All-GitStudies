@@ -1,4 +1,4 @@
-name: Generate Changelog
+name: Generate Incremental Changelog
 
 on:
   push:
@@ -13,36 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout do repositório
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0   # pega todo o histórico
 
-      # 2. Configurar Git (pra conseguir commitar de volta)
       - name: Setup Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # 3. Gerar changelog com base nos commits
-      - name: Generate changelog
+      - name: Generate incremental changelog
         run: |
-          # Cria o arquivo se não existir
           touch CHANGELOG.md
-
-          # Pega o hash do último commit registrado no changelog
-          LAST_COMMIT=$(grep -oP '\(\K[0-9a-f]{7}(?=\))' CHANGELOG.md | head -n 1)
-
-          if [ -z "$LAST_COMMIT" ]; then
-            git log --pretty=format:"- %s (%h)" > new_changelog.txt
-          else
-            git log $LAST_COMMIT..HEAD --pretty=format:"- %s (%h)" > new_changelog.txt
+          
+          # Pega todos os commits da branch, em ordem do mais antigo para o mais novo
+          git log --reverse --pretty=format:"- %s (%h)" > all_commits.txt
+          
+          # Remove commits que já estão no CHANGELOG
+          grep -Fxv -f CHANGELOG.md all_commits.txt > new_commits.txt
+          
+          # Se houver novos commits, adiciona no final do CHANGELOG
+          if [ -s new_commits.txt ]; then
+            echo "" >> CHANGELOG.md
+            cat new_commits.txt >> CHANGELOG.md
           fi
-
-          # Acrescenta os novos commits no topo do changelog existente
-          echo "## Changelog" > CHANGELOG.tmp
-          cat new_changelog.txt >> CHANGELOG.tmp
-          cat CHANGELOG.md >> CHANGELOG.tmp
-          mv CHANGELOG.tmp CHANGELOG.md
 
       - name: Commit changelog
         run: |
