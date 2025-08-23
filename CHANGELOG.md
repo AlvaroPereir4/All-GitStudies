@@ -2,12 +2,8 @@
 
 - chore: update changelog (e2fc4db)
 - fix: adjusmento to changelog.yml.. to ignore chore commits (63872df)
-
-## Changelog
-
 - chore: update changelog (5d97d9b)
 - fix: adjusmento to changelog.yml (743e885)
-
 - fix: adjustment to changelog.yml, to update continuos changelog list (7b98430)
 - All GitStudies (16183c5)
 - readme at (ddf1e27)
