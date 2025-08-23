@@ -26,9 +26,21 @@ jobs:
       # 3. Gerar changelog com base nos commits
       - name: Generate changelog
         run: |
+          # Cria o arquivo se não existir
+          touch CHANGELOG.md
+
+          # Pega os commits desde o último commit gravado no CHANGELOG
+          LAST_COMMIT=$(head -n 1 CHANGELOG.md | awk -F'[()]' '{print $2}')
+          if [ -z "$LAST_COMMIT" ]; then
+            git log --pretty=format:"- %s (%h)" > new_changelog.txt
+          else
+            git log $LAST_COMMIT..HEAD --pretty=format:"- %s (%h)" > new_changelog.txt
+          fi
+
+          # Acrescenta o changelog existente depois dos novos commits
           echo "## Changelog" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          git log --pretty=format:"- %s (%h)" >> CHANGELOG.md
+          cat new_changelog.txt >> CHANGELOG.md
+          tail -n +2 CHANGELOG.md >> CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
 
       # 4. Commitar arquivo atualizado
       - name: Commit changelog
