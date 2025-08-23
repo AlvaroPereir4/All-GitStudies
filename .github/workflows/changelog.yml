@@ -29,18 +29,20 @@ jobs:
           # Cria o arquivo se não existir
           touch CHANGELOG.md
 
-          # Pega os commits desde o último commit gravado no CHANGELOG
-          LAST_COMMIT=$(head -n 1 CHANGELOG.md | awk -F'[()]' '{print $2}')
+          # Pega o hash do último commit registrado no changelog
+          LAST_COMMIT=$(grep -oP '\(\K[0-9a-f]{7}(?=\))' CHANGELOG.md | head -n 1)
+
           if [ -z "$LAST_COMMIT" ]; then
             git log --pretty=format:"- %s (%h)" > new_changelog.txt
           else
             git log $LAST_COMMIT..HEAD --pretty=format:"- %s (%h)" > new_changelog.txt
           fi
 
-          # Acrescenta o changelog existente depois dos novos commits
-          echo "## Changelog" > CHANGELOG.md
-          cat new_changelog.txt >> CHANGELOG.md
-          tail -n +2 CHANGELOG.md >> CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
+          # Acrescenta os novos commits no topo do changelog existente
+          echo "## Changelog" > CHANGELOG.tmp
+          cat new_changelog.txt >> CHANGELOG.tmp
+          cat CHANGELOG.md >> CHANGELOG.tmp
+          mv CHANGELOG.tmp CHANGELOG.md
 
       - name: Commit changelog
         run: |
