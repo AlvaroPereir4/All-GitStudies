@@ -27,26 +27,27 @@ jobs:
         run: |
           touch CHANGELOG.md
 
-          # Pega todos os commits do repo (mais antigos no topo)
-          git log --reverse --pretty=format:"- %s (%h)" \
-            | grep -v '^chore: update changelog' \
-            | grep -Fxv -f CHANGELOG.md > new_commits.txt
+          # Pega commits novos, ignora commits feitos pelo github-actions[bot]
+          NEW_COMMITS=$(git log --reverse --pretty=format:"- %s (%h) [%an]" \
+                        | grep -v '\[github-actions\[bot\]\]' \
+                        | sed 's/ \[.*\]$//' \
+                        | grep -Fxv -f CHANGELOG.md)
 
-          # Se houver novos commits, adiciona no topo sem repetir título
-          if [ -s new_commits.txt ]; then
+          # Se houver novos commits, adiciona no topo
+          if [ ! -z "$NEW_COMMITS" ]; then
             TEMP=$(mktemp)
-            
-            # Mantém título existente ou adiciona se arquivo vazio
+
+            # Adiciona título se não existir
             if ! grep -q "^## Changelog" CHANGELOG.md; then
               echo "## Changelog" > $TEMP
               echo "" >> $TEMP
             fi
 
             # Adiciona os novos commits
-            cat new_commits.txt >> $TEMP
+            echo "$NEW_COMMITS" >> $TEMP
             echo "" >> $TEMP
 
-            # Adiciona conteúdo antigo do changelog sem o título duplicado
+            # Adiciona conteúdo antigo sem repetir título
             tail -n +2 CHANGELOG.md >> $TEMP
 
             mv $TEMP CHANGELOG.md
