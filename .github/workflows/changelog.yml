@@ -1,4 +1,4 @@
-name: Generate Incremental Changelog
+name: Generate Incremental Changelog (Top)
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0   # pega todo o histórico
+          fetch-depth: 0
 
       - name: Setup Git
         run: |
@@ -25,18 +25,21 @@ jobs:
 
       - name: Generate incremental changelog
         run: |
+          # Cria CHANGELOG.md se não existir
           touch CHANGELOG.md
-          
-          # Pega todos os commits da branch, em ordem do mais antigo para o mais novo
-          git log --reverse --pretty=format:"- %s (%h)" > all_commits.txt
-          
-          # Remove commits que já estão no CHANGELOG
-          grep -Fxv -f CHANGELOG.md all_commits.txt > new_commits.txt
-          
-          # Se houver novos commits, adiciona no final do CHANGELOG
-          if [ -s new_commits.txt ]; then
-            echo "" >> CHANGELOG.md
-            cat new_commits.txt >> CHANGELOG.md
+
+          # Filtra os commits que ainda não estão no CHANGELOG
+          NEW_COMMITS=$(git log --reverse --pretty=format:"- %s (%h)" | grep -Fxv -f CHANGELOG.md)
+
+          # Se houver novos commits, adiciona no topo do CHANGELOG
+          if [ ! -z "$NEW_COMMITS" ]; then
+            TEMP=$(mktemp)
+            echo "## Changelog" > $TEMP
+            echo "" >> $TEMP
+            echo "$NEW_COMMITS" >> $TEMP
+            echo "" >> $TEMP
+            cat CHANGELOG.md >> $TEMP
+            mv $TEMP CHANGELOG.md
           fi
 
       - name: Commit changelog
