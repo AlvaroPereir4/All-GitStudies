@@ -1,4 +1,5 @@
-## Changelog
+- fix: adjustments to changelog.yml and some formats of readme.md (1a314ca)
+
 
 - fix: ignore totally commits by githubbot (a7c5bb6)
 - fix: adjusmento to changelog.yml.. to ignore chore commits (a764bf8)
