@@ -1,10 +1,7 @@
 ## Changelog
 
 - fix: ignore totally commits by githubbot (a7c5bb6)
-
 - fix: adjusmento to changelog.yml.. to ignore chore commits (a764bf8)
-
-
 - chore: update changelog (e2fc4db)
 - fix: adjusmento to changelog.yml.. to ignore chore commits (63872df)
 - chore: update changelog (5d97d9b)
